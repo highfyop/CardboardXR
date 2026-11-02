@@ -17,6 +17,9 @@ jobs:
           restore-keys: |
             Library-
 
+      - name: Create Builds Directory
+        run: mkdir -p Builds
+
       - name: Build Unity Project
         uses: game-ci/unity-builder@v4
         env:
@@ -25,10 +28,12 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: Android
-          unityVersion: auto 
+          unityVersion: auto
+          buildMethod: ProjectBootstrap.StereoBuilder.BuildAndroid
+          manualExit: true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: CardboardXR-Android
-          path: build/Android
+          path: Builds/CardboardXR.apk
